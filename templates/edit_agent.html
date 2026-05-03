@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="terminal-box">
+    <h2 class="neon-text">📝 РЕДАКТИРОВАНИЕ ДОСЬЕ: {{ agent.codename }}</h2>
+
+    <form method="POST">
+        <div class="form-group">
+            <label>Кодовое имя:</label>
+            <input type="text" name="codename" value="{{ agent.codename }}" required>
+        </div>
+
+        <div class="form-group">
+            <label>Контактный номер:</label>
+            <input type="text" name="phone" value="{{ agent.phone }}" required>
+        </div>
+
+        <div class="form-group">
+            <label>Email (шифрованный):</label>
+            <input type="email" name="email" value="{{ agent.email }}" required>
+        </div>
+
+        <div class="form-group">
+            <label>Уровень доступа:</label>
+            <select name="access_level">
+                <option value="Секретно" {{ 'selected' if agent.access_level == 'Секретно' }}>Секретно</option>
+                <option value="Совершенно секретно" {{ 'selected' if agent.access_level == 'Совершенно секретно' }}>Совершенно секретно</option>
+                <option value="Только для Бэтмена" {{ 'selected' if agent.access_level == 'Только для Бэтмена' }}>Только для Бэтмена</option>
+            </select>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn">Обновить систему</button>
+            <a href="{{ url_for('view_agent', id=agent.id) }}" style="color: #45a29e; margin-left: 15px; text-decoration: none;">Отмена</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

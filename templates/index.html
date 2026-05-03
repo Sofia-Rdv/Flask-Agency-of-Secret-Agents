@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="terminal-box">
+    <h2>🗄 ГЛАВНЫЙ ТЕРМИНАЛ: СПИСОК АГЕНТОВ</h2>
+
+    <!-- Форма поиска и фильтрации -->
+    <form action="/" method="GET" class="filter-form">
+        <input type="text" name="search" placeholder="Поиск по коду..." value="{{ request.args.get('search', '') }}">
+        <select name="level">
+            <option value="">Все уровни</option>
+            <option value="Секретно">Секретно</option>
+            <option value="Совершенно секретно">Совершенно секретно</option>
+            <option value="Только для Бэтмена">Только для Бэтмена</option>
+        </select>
+        <button type="submit" class="btn">Запрос</button>
+    </form>
+
+    <a href="/add" class="btn btn-add">Завербовать агента</a>
+
+    <table class="agent-table">
+        <thead>
+            <tr>
+                <th>Dossier ID</th>
+                <th>Codename</th>
+                <th>Access</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for agent in agents %}
+            <tr>
+                <td>#{{ agent.id }}</td>
+                <td class="neon-text">{{ agent.codename }}</td>
+                <td><span class="access-tag">{{ agent.access_level }}</span></td>
+                <td>
+                    <a href="{{ url_for('view_agent', id=agent.id) }}">Просмотр</a> | 
+                    <a href="{{ url_for('delete_agent', id=agent.id) }}" class="delete-link">Удалить</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

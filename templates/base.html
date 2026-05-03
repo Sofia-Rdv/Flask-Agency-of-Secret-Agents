@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Bat-Computer | Intel Database</title>
+    <!-- Подключаем наш CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <nav>
+        <div class="logo"><span class="neon-text">🦇 BAT-INTEL v3.1</span></div>
+        <div class="menu">
+            <a href="{{ url_for('index') }}">Терминал</a>
+            <a href="{{ url_for('add_agent') }}">Вербовка</a>
+        </div>
+    </nav>
+
+    <main>
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            {% for message in messages %}
+              <div class="flash">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer style="text-align: center; padding: 20px; color: #45a29e;">
+        &copy; 2026 Wayne Enterprises.
+    </footer>
+</body>
+</html>

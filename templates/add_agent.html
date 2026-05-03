@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="terminal-box">
+    <h2>➕ ВЕРБОВКА НОВОГО АГЕНТА</h2>
+    <form method="POST">
+        <div class="form-group">
+            <label>Кодовое имя:</label>
+            <input type="text" name="codename" placeholder="Например: {{ random_name }}">
+        </div>
+
+        <div class="form-group">
+            <label>Контактный номер:</label>
+            <input type="text" name="phone" required>
+        </div>
+
+        <div class="form-group">
+            <label>Email (шифрованный):</label>
+            <input type="email" name="email" required>
+        </div>
+
+        <div class="form-group">
+            <label>Уровень доступа:</label>
+            <select name="access_level">
+                <option value="Секретно">Секретно</option>
+                <option value="Совершенно секретно">Совершенно секретно</option>
+                <option value="Только для Бэтмена">Только для Бэтмена</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn">Внести в реестр</button>
+        <a href="{{ url_for('index') }}" style="color: #45a29e; margin-left: 15px;">Отмена</a>
+    </form>
+</div>
+{% endblock %}

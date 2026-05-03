@@ -1,0 +1,135 @@
+/* Основные настройки терминала */
+body {
+    background-color: #0b0c10;
+    color: #66fcf1;
+    font-family: 'Courier New', Courier, monospace;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Навигация */
+nav {
+    background-color: #1f2833;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #45a29e;
+    box-shadow: 0 2px 10px #45a29e;
+}
+
+nav a {
+    color: #66fcf1;
+    text-decoration: none;
+    margin-left: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+nav a:hover {
+    color: #c5c6c7;
+    text-shadow: 0 0 8px #66fcf1;
+}
+
+/* Контейнер */
+main {
+    flex: 1;
+    padding: 40px;
+    max-width: 1000px;
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Уведомления */
+.flash {
+    background: rgba(69, 162, 158, 0.2);
+    border: 1px solid #45a29e;
+    padding: 15px;
+    margin-bottom: 20px;
+    color: #66fcf1;
+    text-align: center;
+}
+
+/* Блоки и карточки */
+.terminal-box {
+    border: 1px solid #45a29e;
+    padding: 25px;
+    background: rgba(31, 40, 51, 0.5);
+    box-shadow: 0 0 20px rgba(102, 252, 241, 0.1);
+}
+
+/* Формы ввода */
+.form-group {
+    margin-bottom: 20px;
+}
+
+input[type="text"],
+input[type="email"],
+select {
+    width: 100%;
+    padding: 12px;
+    background: #1f2833;
+    color: #fff;
+    border: 1px solid #45a29e;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: #66fcf1;
+    box-shadow: 0 0 5px #66fcf1;
+}
+
+/* Кнопки */
+.btn {
+    background-color: #45a29e;
+    color: #0b0c10;
+    border: none;
+    padding: 12px 24px;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background-color: #66fcf1;
+    box-shadow: 0 0 10px #66fcf1;
+}
+
+/* Таблицы */
+.agent-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.agent-table th, .agent-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #1f2833;
+}
+
+.agent-table th {
+    color: #45a29e;
+    text-transform: uppercase;
+    font-size: 0.9em;
+}
+
+/* Утилиты */
+.neon-text { text-shadow: 0 0 5px #66fcf1; }
+.delete-link { color: #ff4d4d; text-decoration: none; font-size: 0.9em; }
+.delete-link:hover { text-decoration: underline; }
+.badge {
+    background: #45a29e;
+    color: #0b0c10;
+    padding: 2px 8px;
+    font-size: 0.8em;
+    font-weight: bold;
+}
