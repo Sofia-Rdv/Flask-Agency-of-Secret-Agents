@@ -133,3 +133,84 @@ input:focus, select:focus {
     font-size: 0.8em;
     font-weight: bold;
 }
+
+/* Стили для контейнера ошибок и уведомлений */
+.error-page {
+    text-align: center;
+    padding: 50px 20px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.error-page h1 {
+    font-size: 3rem;
+    color: #e74c3c; /* Красный цвет ошибки */
+    margin-bottom: 20px;
+}
+
+.error-page p {
+    font-size: 1.2rem;
+    color: #918d8d;
+    margin-bottom: 30px;
+}
+
+.btn-back {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #2c3e50;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.btn-back:hover {
+    background-color: #34495e;
+}
+
+/* Разделитель в стиле терминала */
+.terminal-hr {
+    border-color: #45a29e;
+    margin: 20px 0;
+}
+
+/* Контейнер для кнопок действий */
+.actions-group {
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Контурная кнопка (прозрачная) */
+.btn-outline {
+    background: transparent;
+    border: 1px solid #45a29e;
+    color: #45a29e !important; /* Чтобы перебить стандартный цвет ссылки */
+}
+
+.btn-outline:hover {
+    background: rgba(69, 162, 158, 0.1);
+}
+
+/* Вторичная ссылка (например, "Отмена") */
+.link-secondary {
+    color: #45a29e;
+    margin-left: 15px;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.link-secondary:hover {
+    text-decoration: underline;
+    opacity: 0.8;
+}
+
+/* Футер (подвал сайта) */
+.main-footer {
+    text-align: center;
+    padding: 20px;
+    color: #45a29e;
+    margin-top: 40px;
+    border-top: 1px solid rgba(69, 162, 158, 0.1); /* Легкая линия для стиля */
+}

@@ -26,9 +26,10 @@
                 <option value="Только для Бэтмена">Только для Бэтмена</option>
             </select>
         </div>
-
-        <button type="submit" class="btn">Внести в реестр</button>
-        <a href="{{ url_for('index') }}" style="color: #45a29e; margin-left: 15px;">Отмена</a>
+            <div class="form-actions">
+                <button type="submit" class="btn">Внести в реестр</button>
+                <a href="{{ url_for('index') }}" class="link-secondary">Отмена</a>
+            </div>
     </form>
 </div>
 {% endblock %}

@@ -3,7 +3,7 @@
 {% block content %}
 <div class="terminal-box">
     <h2 class="neon-text">📂 ДОСЬЕ: {{ agent.codename }}</h2>
-    <hr style="border-color: #45a29e; margin: 20px 0;">
+    <hr class="terminal-hr">
 
     <div class="agent-details">
         <p><strong>Dossier ID:</strong> #{{ agent.id }}</p>
@@ -12,10 +12,11 @@
         <p><strong>Email:</strong> {{ agent.email }}</p>
     </div>
 
-    <div class="actions" style="margin-top: 30px; display: flex; align-items: center; gap: 20px;">
+    <div class="actions-group">
         <a href="{{ url_for('edit_agent', id=agent.id) }}" class="btn">Изменить данные</a>
-        <a href="{{ url_for('index') }}" class="btn" style="background: transparent; border: 1px solid #45a29e; color: #45a29e;">К списку</a>
-        <a href="{{ url_for('delete_agent', id=agent.id) }}" class="delete-link" onclick="return confirm('Внимание! Вы собираетесь безвозвратно уничтожить досье. Продолжить?')">Уничтожить досье</a>
+        <a href="{{ url_for('index') }}" class="btn btn-outline">К списку</a>
+        <a href="{{ url_for('delete_agent', id=agent.id) }}" class="delete-link" onclick="return confirm('Вы уверены?')">Уничтожить досье</a>
     </div>
 </div>
+
 {% endblock %}
