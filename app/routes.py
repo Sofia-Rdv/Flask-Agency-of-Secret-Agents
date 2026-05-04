@@ -118,3 +118,33 @@ def delete_agent(id):
     return redirect(url_for('index'))
 
 
+@app.errorhandler(404)
+def page_for_found(e):
+    """
+    Обработчик ошибки 404 (Страница не найдена).
+
+    Логирует путь, по которому пытался перейти пользователь,
+    и выводит страницу ошибки.
+
+    :param e: Exception: Объект ошибки.
+    :return: tuple: Шаблон ошибки и HTTP-статус 404.
+    """
+    logger.error(f"Ошибка 404: {request.method} {request.path} - Не найдено.")
+    return render_template("error.html", title='404 - Потеряно',
+                           message="Упс! Страница потерялась в переулках Готэма."), 404
+
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    """
+    Обработчик ошибки 500 (Внутренняя ошибка сервера).
+
+    Логирует критическую ошибку с полной трассировкой стека (traceback)
+    и выводит страницу ошибки.
+
+    :param e: Exception: Объект ошибки.
+    :return: tuple: Шаблон ошибки и HTTP-статус 500.
+    """
+    logger.critical(f"500: Ошибка сервера на пути {request.path} | Причина: {str(e)}", exc_info=True)
+    return render_template("error.html", title="500 - Сбой системы",
+                           message="Наш сервер приуныл. Альфред уже чинит его."), 500
