@@ -1,0 +1,27 @@
+# Секретные ключи
+.env
+
+# Виртуальное окружение
+venv/
+.venv/
+env/
+ENV/
+
+# Кэш Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Настройки Pycharm
+.idea/
+
+# Специфично для Flask
+instance/
+.pytest_cache/
+
+# Базы данных (SQLite)
+*.db
+*.sqlite3
+
+# Логи
+*.log
