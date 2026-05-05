@@ -9,6 +9,12 @@ logger = logging.getLogger("my_app")
 
 # --- ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ---
 def generate_codename():
+    """
+    Генерирует случайное кодовое имя для агента.
+    Использует заранее заданные списки прилагательных и существительных.
+
+    :return: str: Строка с кодовым именем.
+    """
     adjectives = ["Shadow", "Ghost", "Dark", "Silver", "Iron", "Silent", "Night"]
     nouns = ["Fox", "Bat", "Hawk", "Wolf", "Spider", "Falcon", "Knight"]
     logger.info("Генерация кодового имени.")
@@ -20,6 +26,15 @@ def generate_codename():
 # 1. Список агентов + Поиск + Фильтр
 @app.route('/')
 def index():
+    """
+    Главная страница: список всех агентов в системе.
+
+    Поддерживает фильтрацию через GET-запросы:
+    - search: поиск по кодовому имени (частичное совпадение).
+    - level: фильтрация по уровню доступа.
+
+    :return: str: Рендер шаблона index.html со списком агентов.
+    """
     search_query = request.args.get('search')
     level_filter = request.args.get('level')
 
@@ -41,6 +56,15 @@ def index():
 # 2. Добавление агента
 @app.route('/add', methods=['GET', 'POST'])
 def add_agent():
+    """
+    Обработка вербовки нового агента.
+
+    GET: Отображает форму добавления.
+    POST: Сохраняет нового агента в базу данных. Если кодовое имя не введено,
+          генерирует его автоматически.
+
+    :return: str: Шаблон формы или перенаправление на главную при успехе.
+    """
     if request.method == 'POST':
         name = request.form.get('codename') or generate_codename()
         try:
@@ -68,6 +92,12 @@ def add_agent():
 # 3. Просмотр досье
 @app.route('/agent/<int:id>')
 def view_agent(id):
+    """
+     Просмотр детальной информации (досье) конкретного агента.
+
+    :param id: int: Уникальный идентификатор агента в базе данных.
+    :return: str: Шаблон view_agent.html или ошибка 404, если агент не найден.
+    """
     agent = Agent.query.get_or_404(id)
     logger.info(f"ДОСТУП: Просмотр досье ID {id} ({agent.codename})")
     return render_template('view_agent.html', agent=agent)
@@ -76,6 +106,16 @@ def view_agent(id):
 # 4. Редактирование
 @app.route('/edit/<int:id>', methods=['GET', 'POST'])
 def edit_agent(id):
+    """
+    Редактирование существующих данных агента.
+
+    GET: Загружает текущие данные агента в форму.
+    POST: Обновляет запись в базе данных.
+
+    :param id: int: Идентификатор агента для редактирования.
+    :return: str: Шаблон edit_agent.html или переход в досье при успехе.
+
+    """
     agent = Agent.query.get_or_404(id)
     if request.method == 'POST':
         old_name = agent.codename
@@ -101,6 +141,12 @@ def edit_agent(id):
 # 5. Удаление
 @app.route('/delete/<int:id>')
 def delete_agent(id):
+    """
+    Безвозвратное удаление агента из базы данных.
+
+    :param id: int: Идентификатор агента для удаления.
+    :return: Response: Перенаправление на главную страницу (index).
+    """
     agent = Agent.query.get_or_404(id)
     codename = agent.codename
     try:
