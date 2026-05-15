@@ -2,9 +2,17 @@ import pytest
 from app import create_app, db
 from app.models import Agent
 
+
 @pytest.fixture
 def client():
-    """Создает экземпляр приложения для каждого теста."""
+    """
+    Создает изолированный экземпляр приложения для каждого теста.
+
+    Настройки:
+    - Использование базы данных в оперативной памяти (:memory:).
+    - Отключение CSRF для упрощения отправки POST-запросов.
+    - Отключение режима отладки для корректной проверки страниц ошибок.
+    """
     app = create_app()
     app.config.update({
         'TESTING': True,
@@ -20,9 +28,14 @@ def client():
         db.session.remove()
         db.drop_all()
 
+
 @pytest.fixture
 def sample_agent_id(client):
-    """Создает тестового агента и возвращает его ID."""
+    """
+    Создает в базе данных тестового агента "Silver Bat".
+
+    :return: int: ID созданного агента для использования в тестах просмотра, редактирования и удаления.
+    """
     agent = Agent(
         codename="Silver Bat",
         phone="555-0101",
@@ -33,14 +46,26 @@ def sample_agent_id(client):
     db.session.commit()
     return agent.id
 
+
 # --- ТЕСТЫ ---
 
 def test_index_page(client):
+    """
+    Проверяет доступность главной страницы системы BAT-INTEL.
+    Убеждается, что страница возвращает статус 200 и содержит заголовок системы.
+    """
     response = client.get('/')
     assert response.status_code == 200
     assert "BAT-INTEL" in response.get_data(as_text=True)
 
+
 def test_add_agent_post(client):
+    """
+    Тестирует добавление нового агента через форму (POST-запрос).
+    Проверяет:
+    1. Редирект и наличие нового имени в списке после добавления.
+    2. Физическое наличие записи в базе данных через SQLAlchemy.
+    """
     data = {
         'codename': 'Night Wolf',
         'phone': '999-999',
@@ -56,7 +81,12 @@ def test_add_agent_post(client):
     agent = Agent.query.filter_by(codename='Night Wolf').first()
     assert agent is not None
 
+
 def test_generate_codename_auto(client):
+    """
+    Проверяет работу алгоритма автоматической генерации кодового имени.
+    Если при регистрации поле имени пустое, система должна сама назначить имя (например, 'Agent X').
+    """
     data = {
         'codename': '',
         'phone': '000',
@@ -67,13 +97,23 @@ def test_generate_codename_auto(client):
     agent = Agent.query.filter_by(email='auto@bat.com').first()
     assert agent.codename != ""
 
+
 def test_view_agent(client, sample_agent_id):
+    """
+    Проверяет страницу детального досье конкретного агента.
+    Убеждается, что по уникальному ID отображается корректная информация.
+    """
     # Исправлено: убраны лишние скобки в f-строке
     response = client.get(f'/agent/{sample_agent_id}')
     assert response.status_code == 200
     assert "Silver Bat" in response.get_data(as_text=True)
 
+
 def test_edit_agent(client, sample_agent_id):
+    """
+    Тестирует функционал обновления данных агента.
+    Проверяет, что после отправки формы данные в базе данных действительно меняются.
+    """
     data = {
         'codename': 'Updated Name',
         'phone': '111',
@@ -86,14 +126,25 @@ def test_edit_agent(client, sample_agent_id):
     agent = Agent.query.get(sample_agent_id)
     assert agent.codename == 'Updated Name'
 
+
 def test_delete_agent(client, sample_agent_id):
+    """
+    Тестирует процесс уничтожения досье агента.
+    Проверяет:
+    1. Появление подтверждающего сообщения ("Досье уничтожено").
+    2. Отсутствие записи в базе данных после удаления.
+    """
     response = client.get(f'/delete/{sample_agent_id}', follow_redirects=True)
     assert response.status_code == 200
     assert "Досье уничтожено" in response.get_data(as_text=True)
     assert Agent.query.get(sample_agent_id) is None
 
+
 def test_404_error(client):
-    """Проверка кастомной ошибки 404."""
+    """
+    Проверяет систему обработки исключений при обращении к несуществующим записям.
+    Убеждается, что возвращается кастомная страница ошибки 404 со стилизованным текстом.
+    """
     response = client.get('/agent/9999')
     assert response.status_code == 404
     # Если тест всё еще падает здесь, значит Flask не подхватывает твой @app.errorhandler(404)
