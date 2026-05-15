@@ -1,10 +1,14 @@
-from flask import render_template, request, redirect, url_for, flash, current_app as app
+from flask import Blueprint, render_template, request, redirect, url_for, flash
 from app.models import Agent
 from app import db
 import random
 import logging
 
 logger = logging.getLogger("my_app")
+
+# 1. Создаем объект блюпринта
+# 'main' - это имя, по которому мы будем обращаться к нему в url_for
+main = Blueprint('main', __name__)
 
 
 # --- ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ---
@@ -24,7 +28,7 @@ def generate_codename():
 # --- МАРШРУТЫ ---
 
 # 1. Список агентов + Поиск + Фильтр
-@app.route('/')
+@main.route('/')
 def index():
     """
     Главная страница: список всех агентов в системе.
@@ -54,7 +58,7 @@ def index():
 
 
 # 2. Добавление агента
-@app.route('/add', methods=['GET', 'POST'])
+@main.route('/add', methods=['GET', 'POST'])
 def add_agent():
     """
     Обработка вербовки нового агента.
@@ -80,7 +84,7 @@ def add_agent():
             logger.info(f"СИСТЕМА: Добавлен новый агент {name} (Уровень: {new_agent.access_level})")
 
             flash(f"Агент {name} добавлен в систему.")
-            return redirect(url_for('index'))
+            return redirect(url_for('main.index'))
         except Exception as e:
             db.session.rollback()
             logger.critical(f"ОШИБКА при добавлении агента: {str(e)}")
@@ -90,7 +94,7 @@ def add_agent():
 
 
 # 3. Просмотр досье
-@app.route('/agent/<int:id>')
+@main.route('/agent/<int:id>')
 def view_agent(id):
     """
      Просмотр детальной информации (досье) конкретного агента.
@@ -104,7 +108,7 @@ def view_agent(id):
 
 
 # 4. Редактирование
-@app.route('/edit/<int:id>', methods=['GET', 'POST'])
+@main.route('/edit/<int:id>', methods=['GET', 'POST'])
 def edit_agent(id):
     """
     Редактирование существующих данных агента.
@@ -129,7 +133,7 @@ def edit_agent(id):
             logger.info(f"ОБНОВЛЕНИЕ: Досье {old_name} (ID {id}) изменено.")
 
             flash("Досье успешно обновлено.")
-            return redirect(url_for('view_agent', id=agent.id))
+            return redirect(url_for('main.view_agent', id=agent.id))
         except Exception as e:
             db.session.rollback()
             logger.error(f"ОШИБКА при обновлении досье ID {id}: {str(e)}")
@@ -139,7 +143,7 @@ def edit_agent(id):
 
 
 # 5. Удаление
-@app.route('/delete/<int:id>')
+@main.route('/delete/<int:id>')
 def delete_agent(id):
     """
     Безвозвратное удаление агента из базы данных.
@@ -161,10 +165,10 @@ def delete_agent(id):
         logger.error(f"ОШИБКА при удалении агента ID {id}: {str(e)}")
         flash("Ошибка при попытке удаления.")
 
-    return redirect(url_for('index'))
+    return redirect(url_for('main.index'))
 
 
-@app.errorhandler(404)
+@main.app_errorhandler(404)
 def page_for_found(e):
     """
     Обработчик ошибки 404 (Страница не найдена).
@@ -180,7 +184,7 @@ def page_for_found(e):
                            message="Упс! Страница потерялась в переулках Готэма."), 404
 
 
-@app.errorhandler(500)
+@main.app_errorhandler(500)
 def internal_server_error(e):
     """
     Обработчик ошибки 500 (Внутренняя ошибка сервера).

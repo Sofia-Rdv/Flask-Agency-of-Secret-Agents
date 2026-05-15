@@ -33,8 +33,8 @@
                 <td class="neon-text">{{ agent.codename }}</td>
                 <td><span class="access-tag">{{ agent.access_level }}</span></td>
                 <td>
-                    <a href="{{ url_for('view_agent', id=agent.id) }}">Просмотр</a> | 
-                    <a href="{{ url_for('delete_agent', id=agent.id) }}" class="delete-link">Удалить</a>
+                    <a href="{{ url_for('main.view_agent', id=agent.id) }}">Просмотр</a> |
+                    <a href="{{ url_for('main.delete_agent', id=agent.id) }}" class="delete-link">Удалить</a>
                 </td>
             </tr>
             {% endfor %}
